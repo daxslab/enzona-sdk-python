@@ -23,6 +23,7 @@ Please follow the [installation procedure](#installation--usage) and then run th
 
 ```python
 from enzona_sdk.payment import PaymentAPI
+from enzona_payment import Payload2
 
 # Creates an API instance
 payment_api = PaymentAPI(use_sandbox=True)
@@ -34,30 +35,43 @@ access_token = payment_api.request_access_token('CUSTOMER_KEY', 'CUSTOMER_SECRET
 payment_api.set_access_token(access_token)
 
 # creates an api endpoint object
-api_object = payment_api.list_refunds_payment()
+api_object = payment_api.create_payment()
 
 # define parameters
-transaction_uuid = "transaction_uuid_example"
-limit = "limit_example"
-offset = "offset_example"
-status_filter = "status_filter_example"
-start_date_filter = "start_date_filter_example"
-end_date_filter = "end_date_filter_example"
-order_filter = "order_filter_example"
+payoad = Payload2(
+    description='string',
+    currency='CUP',
+    amount={
+        "total": 0.05,
+        "details": {
+            "shipping": 0.01,
+            "tax": 0.01,
+            "discount": 0.01,
+            "tip": 0.01
+        }
+    },
+    items=[
+        {
+            "name": "string",
+            "description": "string",
+            "quantity": 1,
+            "price": 0.03,
+            "tax": 0.01
+        }
+    ],
+    merchant_op_id=123456789123,
+    invoice_number=1212,
+    return_url="https://mymerchant.cu/return",
+    cancel_url="https://mymerchant.cu/cancel",
+    terminal_id=12121,
+    # buyer_identity_code="string"
+)
 
 # call endpoint
 try:
-    result = api_object.payments_transaction_uuid_refunds_get(
-        transaction_uuid=transaction_uuid,
-        limit=limit,
-        offset=offset,
-        status_filter=status_filter,
-        start_date_filter=start_date_filter,
-        end_date_filter=end_date_filter,
-        order_filter=order_filter
-    )
+    result = api_object.payments_post(payload=payoad)
     print(result)
 except Exception as e:
-    print('Exception when calling api_object.payments_transaction_uuid_refunds_get: '+ str(e))
+    print('Exception when calling api_object.payments_post: '+ str(e))
 
 ```
