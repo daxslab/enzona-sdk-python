@@ -43,10 +43,10 @@ class BaseAPI:
                 customer_secret=customer_secret
             )
         )
-        response = http.request('POST', url, fields={
-            'grant_type': 'client_credentials',
-            'scope': body_scopes
-        }, headers=headers, encode_multipart=False)
+        headers["Content-Type"] = "application/x-www-form-urlencoded"
+        body = b'grant_type=client_credentials&scope='+bytes(body_scopes, 'utf-8')
+        response = http.urlopen('POST', url, body=body, headers=headers)
+
         if response.status != 200:
             raise Exception('Error with status code: ' + str(response.status) + ' and body: ' + str(response.data))
         elif response.headers.get('Content-Type', None) != 'application/json':

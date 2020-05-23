@@ -1,7 +1,7 @@
 from enzona_qr import Configuration, PermiteCrearUnQRDePagoAUnComercioApi, \
     PermiteCrearUnQRParaHacerUnPagoEntrePersonas_Api, ObtieneLaInformacinDeUnQRApi, ApiClient
 
-from enzona_sdk.base import BaseAPI
+from enzona_sdk.base import BaseAPI, SCOPE_QR
 
 
 class QrAPI(BaseAPI):
@@ -17,6 +17,11 @@ class QrAPI(BaseAPI):
             self.config.host = self.host + self.api_route
         if not client:
             self.client = ApiClient(configuration=self.config)
+
+    def request_access_token(self, customer_key, customer_secret, scopes=None):
+        if not scopes:
+            scopes = [SCOPE_QR]
+        return super().request_access_token(customer_key, customer_secret, scopes)
 
     def create_qr_merchant(self)->PermiteCrearUnQRDePagoAUnComercioApi:
         return PermiteCrearUnQRDePagoAUnComercioApi(api_client=self.client)
