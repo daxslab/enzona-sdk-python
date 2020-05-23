@@ -58,6 +58,6 @@ try:
     )
     print(result)
 except Exception as e:
-    print('Exception when calling $apiObject->paymentsTransactionUuidRefundsGet: '+ str(e))
+    print('Exception when calling api_object.payments_transaction_uuid_refunds_get: '+ str(e))
 
 ```
