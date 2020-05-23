@@ -22,7 +22,7 @@ To install via pip run:
 Please follow the [installation procedure](#installation--usage) and then run the following:
 
 ```python
-from enzona_sdk.payments import PaymentAPI
+from enzona_sdk.payment import PaymentAPI
 
 # Creates an API instance
 payment_api = PaymentAPI(use_sandbox=True)
